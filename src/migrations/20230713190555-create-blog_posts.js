@@ -34,10 +34,12 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       published: {
-
+        allowNull: false,
+        type: Sequelize.DATE,
       },
       updated: {
-
+        allowNull: false,
+        type: Sequelize.DATE,
       }
     });
   },
