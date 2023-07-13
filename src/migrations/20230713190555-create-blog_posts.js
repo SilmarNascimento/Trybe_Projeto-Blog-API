@@ -47,7 +47,7 @@ module.exports = {
    * @param {import('sequelize').QueryInterface} queryInterface 
    * @param {import('sequelize')} Sequelize 
    */
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface, _Sequelize) => {
     await queryInterface.dropTable('blog_posts');
   }
 };
