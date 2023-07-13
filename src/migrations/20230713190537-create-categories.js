@@ -1,21 +1,32 @@
 'use strict';
 
 module.exports = {
+  /**
+   * 
+   * @param {import('sequelize').QueryInterface} queryInterface 
+   * @param {import('sequelize')} Sequelize 
+   */
   up: async (queryInterface, Sequelize) => {
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
+    await queryInterface.createTable('categories', {
+      id: {
+        autoIncrement: true,
+        allowNull: false,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+      },
+      name: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      }
+    });
   },
 
-  down: async (queryInterface, Sequelize) => {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
+  /**
+   * 
+   * @param {import('sequelize').QueryInterface} queryInterface 
+   * @param {import('sequelize')} Sequelize 
+   */
+  down: async (queryInterface, _Sequelize) => {
+    await queryInterface.dropTable('categories');
   }
 };
