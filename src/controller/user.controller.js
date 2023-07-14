@@ -22,7 +22,19 @@ const getAllUsers = async (_request, response) => {
   });
 };
 
+const getUserById = async (request, response) => {
+  const { id } = request.params;
+  const { status, data } = await userService.getUserById(id);
+  if (status && data) {
+    return response.status(mapStatus(status)).json(data);
+  }
+  return response.status(500).json({
+    message: 'Internal Server Error',
+  });
+};
+
 module.exports = {
   createUser,
   getAllUsers,
+  getUserById,
 };
