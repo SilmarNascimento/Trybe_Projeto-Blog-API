@@ -42,10 +42,8 @@ const getUserById = async (userId) => {
     if (!userFound) {
       return { status: 'NOT_FOUND', data: { message: 'User does not exist' } };
     }
-    const filteredUsers = userFound.map((user) => {
-      const { id, displayName, email, image } = user;
-      return { id, displayName, email, image };
-    });
+    const { id, displayName, email, image } = userFound;
+    const filteredUsers = { id, displayName, email, image };
     return { status: 'SUCCESSFUL', data: filteredUsers };
   } catch (error) {
     return { status: 'ERROR', data: { message: 'Internal Server Error' } };
