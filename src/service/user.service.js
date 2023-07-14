@@ -7,7 +7,6 @@ const createUser = async ({ displayName, email, password, image }) => {
   const alreadyExists = await User.findOne({
     where: { email },
   });
-  console.log(alreadyExists);
   if (alreadyExists) {
     return { status: 'CONFLICT', data: { message: 'User already registered' } };
   }

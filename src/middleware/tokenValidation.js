@@ -9,7 +9,7 @@ const tokenValidation = async (request, response, next) => {
     if (!bearerToken) {
       return response.status(401).json({ message: 'Token not found' });
     }
-    const token = bearerToken.split(' ')[1];
+    const token = bearerToken.split(' ')[1] || bearerToken;
     const decoded = jwt.verify(token, secret);
     const user = await User.findOne({
       where: { email: decoded.data.email },

@@ -13,6 +13,7 @@ const login = async (email, password) => {
   }
   const jwtConfig = { algorithm: 'HS256' };
   const token = jwt.sign({ data: { email } }, secret, jwtConfig);
+  console.log('token gerado pela camada loginService:  ', token);
   return { status: 'SUCCESSFUL', data: { token } };
 };
 

@@ -9,6 +9,7 @@ const createCategory = async (name) => {
   }
   try {
     const newCategory = await Category.create({ name });
+    console.log('category: ', newCategory);
     return { status: 'CREATED', data: newCategory };  
   } catch (error) {
     return { status: 'ERROR', data: { message: 'Internal Server Error' } };
