@@ -9,13 +9,13 @@ const createUser = async ({ displayName, email, password, image }) => {
   });
   console.log(alreadyExists);
   if (alreadyExists) {
-    return { status: 'CONFLICT', data: { message: 'User already registeredd' } };
+    return { status: 'CONFLICT', data: { message: 'User already registered' } };
   }
   try {
     await User.create({ displayName, email, password, image });
     const jwtConfig = { algorithm: 'HS256' };
     const token = jwt.sign({ data: { email } }, secret, jwtConfig);
-    return { status: 'SUCCESSFUL', data: { token } };  
+    return { status: 'CREATED', data: { token } };  
   } catch (error) {
     return { status: 'ERROR', data: { message: 'Internal Server Error' } };
   }
