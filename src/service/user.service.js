@@ -21,6 +21,20 @@ const createUser = async ({ displayName, email, password, image }) => {
   }
 };
 
+const getAllUsers = async () => {
+  try {
+    const users = await User.findAll();
+    const filteredUsers = users.map((user) => {
+      const { id, displayName, email, image } = user;
+      return { id, displayName, email, image };
+    });
+    return { status: 'SUCCESSFUL', data: filteredUsers };
+  } catch (error) {
+    return { status: 'ERROR', data: { message: 'Internal Server Error' } };
+  }
+};
+
 module.exports = {
   createUser,
+  getAllUsers,
 };

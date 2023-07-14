@@ -12,6 +12,17 @@ const createUser = async (request, response) => {
   });
 };
 
+const getAllUsers = async (_request, response) => {
+  const { status, data } = await userService.getAllUsers();
+  if (status && data) {
+    return response.status(mapStatus(status)).json(data);
+  }
+  return response.status(500).json({
+    message: 'Internal Server Error',
+  });
+};
+
 module.exports = {
   createUser,
+  getAllUsers,
 };
