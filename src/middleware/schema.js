@@ -8,6 +8,7 @@ const emailSchema = Joi.string().regex(emailRegex).required().messages({
 });
 const passwordSchema = Joi.string().min(6).required();
 const imageSchema = Joi.string();
+const nameSchema = Joi.string().required();
 
 const crateUserSchema = Joi.object({
   displayName: displayNameSchema,
@@ -16,7 +17,12 @@ const crateUserSchema = Joi.object({
   image: imageSchema,
 });
 
+const categorySchema = Joi.object({
+  name: nameSchema,
+});
+
 module.exports = {
   crateUserSchema,
   emailSchema,
+  categorySchema,
 };

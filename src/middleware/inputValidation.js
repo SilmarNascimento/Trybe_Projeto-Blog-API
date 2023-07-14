@@ -1,10 +1,21 @@
-const { crateUserSchema } = require('./schema');
+const { crateUserSchema, categorySchema } = require('./schema');
 
 const loginInputValidation = (request, response, next) => {
   const { email, password } = request.body;
   if (!email && !password) {
     return response.status(400).json({
       message: 'Some required fields are missing',
+    });
+  }
+  next();
+};
+
+const createCategoryInputValidation = (request, response, next) => {
+  const { name } = request.body;
+  const { error } = categorySchema.validate({ name });
+  if (error && error.details[0].type === 'any.required') {
+    return response.status(400).json({
+      message: error.message,
     });
   }
   next();
@@ -29,4 +40,5 @@ const createUserInputValidation = (request, response, next) => {
 module.exports = {
   loginInputValidation,
   createUserInputValidation,
+  createCategoryInputValidation,
 };
