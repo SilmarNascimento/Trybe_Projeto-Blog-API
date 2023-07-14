@@ -11,10 +11,7 @@ const login = async (email, password) => {
   if (!userFound) {
     return { status: 'BAD_REQUEST', data: { message: 'Invalid fields' } };
   }
-  const jwtConfig = {
-    alg: 'HS256',
-    typ: 'JWT',
-  };
+  const jwtConfig = { algorithm: 'HS256' };
   const token = jwt.sign({ data: { email } }, secret, jwtConfig);
   return { status: 'SUCCESSFUL', data: { token } };
 };
