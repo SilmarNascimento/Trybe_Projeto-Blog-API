@@ -16,6 +16,16 @@ const createCategory = async (name) => {
   }
 };
 
+const gatAllCategories = async () => {
+  try {
+    const categories = await Category.findAll();
+    return { status: 'SUCCESSFUL', data: categories };
+  } catch (error) {
+    return { status: 'ERROR', data: { message: 'Internal Server Error' } };
+  }
+};
+
 module.exports = {
   createCategory,
+  gatAllCategories,
 };

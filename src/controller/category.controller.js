@@ -12,6 +12,17 @@ const createCategory = async (request, response) => {
   });
 };
 
+const getAllCategories = async (_request, response) => {
+  const { status, data } = await categoryService.gatAllCategories();
+  if (status && data) {
+    return response.status(mapStatus(status)).json(data);
+  }
+  return response.status(500).json({
+    message: 'Internal Server Error',
+  });
+};
+
 module.exports = {
   createCategory,
+  getAllCategories,
 };
