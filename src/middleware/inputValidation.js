@@ -45,11 +45,6 @@ const createPostInputValidation = (request, response, next) => {
       message: error.message,
     });
   }
-  if (error && error.details[0].type === 'string.pattern.base') {
-    return response.status(400).json({
-      message: error.message,
-    });
-  }
   next();
 };
 
