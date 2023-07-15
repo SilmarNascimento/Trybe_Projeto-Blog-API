@@ -6,14 +6,11 @@ const createPost = async ({ title, content, userId }, arrayId) => {
     const published = new Date().toISOString();
     const postCreated = await BlogPost.create({ title, content, userId, updated, published });
     const promise = arrayId.map(async (id) => {
-      console.log(typeof postCreated.id, typeof id);
       const postCategoryObj = { postId: postCreated.id, categoryId: id };
-      console.log('objeto ao criar dados na tabela intermediaria', postCategoryObj);
       const postCategoryCreated = await PostCategory.create(postCategoryObj);
       return postCategoryCreated;
     });
-    const insertresponse = await Promise.all(promise);
-    console.log('tabela intermediaria: ', insertresponse);
+    await Promise.all(promise);
     return { status: 'CREATED', data: postCreated };
   } catch (error) {
     return { status: 'ERROR', data: { message: 'Internal Server Error' } };
@@ -23,8 +20,6 @@ const createPost = async ({ title, content, userId }, arrayId) => {
 const findAllCategoryIds = async (array) => {
   try {
     const promise = array.map(async (id) => {
-      console.log(id);
-      console.log(typeof id);
       const categoryId = await Category.findByPk(id);
       return categoryId;
     });
