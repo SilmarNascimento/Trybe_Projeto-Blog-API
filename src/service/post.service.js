@@ -1,4 +1,4 @@
-const { Category, BlogPost, PostCategory } = require('../models');
+const { User, Category, BlogPost, PostCategory } = require('../models');
 
 const createPost = async ({ title, content, userId }, arrayId) => {
   try {
@@ -32,7 +32,25 @@ const findAllCategoryIds = async (array) => {
   }
 };
 
+const getAllPosts = async () => {
+  try {
+    console.log('entrei service');
+    const allPosts = await BlogPost.findAll({
+      include: [{
+        model: User, as: 'user', through: { attributes: [] },
+      }, {
+        model: Category, as: 'categories', through: { attributes: [] },
+      }],
+    });
+    console.log(allPosts);
+    return { status: 'SUCCESSFUL', data: allPosts };
+  } catch (error) {
+    return { status: 'ERROR', data: { message: 'Internal Server Error' } };
+  }
+};
+
 module.exports = {
   createPost,
   findAllCategoryIds,
+  getAllPosts,
 };

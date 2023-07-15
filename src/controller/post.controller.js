@@ -2,7 +2,6 @@ const { postService } = require('../service');
 const { mapStatus } = require('../utils/mapStatus');
 
 const createPost = async (request, response) => {
-  console.log('entrei controller');
   const { title, content, categoryIds } = request.body;
   const { id: userId } = request.user;
   const idNotFound = await postService.findAllCategoryIds(categoryIds);
@@ -18,6 +17,18 @@ const createPost = async (request, response) => {
   });
 };
 
+const getAllPosts = async (_request, response) => {
+  console.log('entrei controller');
+  const { status, data } = await postService.getAllPosts();
+  if (status && data) {
+    return response.status(mapStatus(status)).json(data);
+  }
+  return response.status(500).json({
+    message: 'Internal Server Error',
+  });
+};
+
 module.exports = {
   createPost,
+  getAllPosts,
 };
