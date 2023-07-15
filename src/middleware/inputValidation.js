@@ -1,4 +1,4 @@
-const { crateUserSchema, categorySchema } = require('./schema');
+const { crateUserSchema, createCategorySchema, createPostSchema } = require('./schema');
 
 const loginInputValidation = (request, response, next) => {
   const { email, password } = request.body;
@@ -12,7 +12,7 @@ const loginInputValidation = (request, response, next) => {
 
 const createCategoryInputValidation = (request, response, next) => {
   const { name } = request.body;
-  const { error } = categorySchema.validate({ name });
+  const { error } = createCategorySchema.validate({ name });
   if (error && error.details[0].type === 'any.required') {
     return response.status(400).json({
       message: error.message,
@@ -37,8 +37,25 @@ const createUserInputValidation = (request, response, next) => {
   next();
 };
 
+const createPostInputValidation = (request, response, next) => {
+  const { title, content, categoryIds } = request.body;
+  const { error } = createPostSchema.validate({ title, content, categoryIds });
+  if (error && error.details[0].type === 'any.required') {
+    return response.status(400).json({
+      message: error.message,
+    });
+  }
+  if (error && error.details[0].type === 'string.pattern.base') {
+    return response.status(400).json({
+      message: error.message,
+    });
+  }
+  next();
+};
+
 module.exports = {
   loginInputValidation,
   createUserInputValidation,
   createCategoryInputValidation,
+  createPostInputValidation,
 };
