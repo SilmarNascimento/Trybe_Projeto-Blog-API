@@ -11,7 +11,7 @@ const imageSchema = Joi.string();
 const nameSchema = Joi.string().required();
 const titleSchema = Joi.string().required();
 const contentSchema = Joi.string().required();
-const categoryIdSchema = Joi.required();
+const categoryIdSchema = Joi.array().items(Joi.number().integer()).required();
 
 const crateUserSchema = Joi.object({
   displayName: displayNameSchema,
@@ -30,6 +30,7 @@ const createPostSchema = Joi.object({
   categoryIds: categoryIdSchema,
 }).messages({
   'any.required': 'Some required fields are missing',
+  'string.empty': 'Some required fields are missing',
 });
 
 module.exports = {

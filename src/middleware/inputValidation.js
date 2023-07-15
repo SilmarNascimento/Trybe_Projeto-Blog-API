@@ -40,7 +40,7 @@ const createUserInputValidation = (request, response, next) => {
 const createPostInputValidation = (request, response, next) => {
   const { title, content, categoryIds } = request.body;
   const { error } = createPostSchema.validate({ title, content, categoryIds });
-  if (error && error.details[0].type === 'any.required') {
+  if (error && error.details[0].type) {
     return response.status(400).json({
       message: error.message,
     });
