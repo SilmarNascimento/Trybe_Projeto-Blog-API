@@ -53,19 +53,19 @@ const getAllPosts = async () => {
 
 const getPostsById = async (postId) => {
   try {
-    const allPosts = await BlogPost.findOne({
+    const postFound = await BlogPost.findOne({
       where: { id: postId },
       include: [
         { model: User, as: 'user' },
         { model: Category, as: 'categories', through: { attributes: [] },
       }],
     });
-    const formattedPosts = allPosts.map(({ dataValues: post }) => {
-      const { id, displayName, email, image } = post.user.dataValues;
-      const formattedPost = { ...post, user: { id, displayName, email, image } };
-      return formattedPost;
-    });
-    return { status: 'SUCCESSFUL', data: formattedPosts };
+    if (!postFound) {
+    return { status: 'NOT_FOUND', data: { message: 'Post does not exist' } };
+    }
+    const { id, displayName, email, image } = postFound.dataValues.user.dataValues;
+    const formattedPost = { ...postFound.dataValues, user: { id, displayName, email, image } };
+    return { status: 'SUCCESSFUL', data: formattedPost };
   } catch (error) {
     return { status: 'ERROR', data: { message: 'Internal Server Error' } };
   }
