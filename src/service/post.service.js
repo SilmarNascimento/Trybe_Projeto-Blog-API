@@ -75,7 +75,7 @@ const getPostById = async (postId) => {
 
 const updatePostById = async (tokenUserId, postId, contentObj) => {
   try {
-    const postFound = await getPostById(postId);
+    const { data: postFound } = await getPostById(postId);
     if (postFound.userId !== tokenUserId) {
       return { status: 'UNAUTHORIZED', data: { message: 'Unauthorized user' } };
     }
@@ -89,6 +89,7 @@ const updatePostById = async (tokenUserId, postId, contentObj) => {
     });
     return { status: 'SUCCESSFUL', data: updatedPost };
   } catch (error) {
+    console.log(error);
     return ERROR_RESPONSE;
   }
 };
