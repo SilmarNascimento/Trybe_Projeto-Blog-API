@@ -2,6 +2,7 @@ const { postService } = require('../service');
 const { mapStatus } = require('../utils/mapStatus');
 
 const createPost = async (request, response) => {
+  console.log('entrei createPost');
   const { title, content, categoryIds } = request.body;
   const { id: userId } = request.user;
   const idNotFound = await postService.findAllCategoryIds(categoryIds);
@@ -18,7 +19,7 @@ const createPost = async (request, response) => {
 };
 
 const getAllPosts = async (_request, response) => {
-  console.log('entrei controller');
+  console.log('entrei getAllPosts');
   const { status, data } = await postService.getAllPosts();
   if (status && data) {
     return response.status(mapStatus(status)).json(data);

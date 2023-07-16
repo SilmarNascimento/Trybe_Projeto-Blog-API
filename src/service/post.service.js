@@ -34,17 +34,21 @@ const findAllCategoryIds = async (array) => {
 
 const getAllPosts = async () => {
   try {
-    console.log('entrei service');
     const allPosts = await BlogPost.findAll({
-      include: [{
-        model: User, as: 'user', through: { attributes: [] },
-      }, {
-        model: Category, as: 'categories', through: { attributes: [] },
+      include: [
+        { model: User, as: 'user' },
+        { model: Category, as: 'categories', through: { attributes: [] },
       }],
     });
-    console.log(allPosts);
-    return { status: 'SUCCESSFUL', data: allPosts };
+    const formattedPosts = allPosts.map(({ dataValues: post }) => {
+      const { id, displayName, email, image } = post.user.dataValues;
+      const formattedPost = { ...post, user: { id, displayName, email, image } };
+      return formattedPost;
+    });
+    console.log('o resultado da pesquisa: ', formattedPosts);
+    return { status: 'SUCCESSFUL', data: formattedPosts };
   } catch (error) {
+    console.log(error);
     return { status: 'ERROR', data: { message: 'Internal Server Error' } };
   }
 };
