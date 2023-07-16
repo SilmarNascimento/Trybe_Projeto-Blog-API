@@ -45,10 +45,28 @@ const getAllPosts = async () => {
       const formattedPost = { ...post, user: { id, displayName, email, image } };
       return formattedPost;
     });
-    console.log('o resultado da pesquisa: ', formattedPosts);
     return { status: 'SUCCESSFUL', data: formattedPosts };
   } catch (error) {
-    console.log(error);
+    return { status: 'ERROR', data: { message: 'Internal Server Error' } };
+  }
+};
+
+const getPostsById = async (postId) => {
+  try {
+    const allPosts = await BlogPost.findOne({
+      where: { id: postId },
+      include: [
+        { model: User, as: 'user' },
+        { model: Category, as: 'categories', through: { attributes: [] },
+      }],
+    });
+    const formattedPosts = allPosts.map(({ dataValues: post }) => {
+      const { id, displayName, email, image } = post.user.dataValues;
+      const formattedPost = { ...post, user: { id, displayName, email, image } };
+      return formattedPost;
+    });
+    return { status: 'SUCCESSFUL', data: formattedPosts };
+  } catch (error) {
     return { status: 'ERROR', data: { message: 'Internal Server Error' } };
   }
 };
@@ -57,4 +75,5 @@ module.exports = {
   createPost,
   findAllCategoryIds,
   getAllPosts,
+  getPostsById,
 };
