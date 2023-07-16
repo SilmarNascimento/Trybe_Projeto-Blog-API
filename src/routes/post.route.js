@@ -1,10 +1,14 @@
 const route = require('express').Router();
 const { postController } = require('../controller');
-const { createPostInputValidation } = require('../middleware/inputValidation');
+const {
+  createPostInputValidation,
+  updatePostInputValidation,
+} = require('../middleware/inputValidation');
 const tokenValidation = require('../middleware/tokenValidation');
 
 route.post('/', tokenValidation, createPostInputValidation, postController.createPost);
 route.get('/', tokenValidation, postController.getAllPosts);
-route.get('/:id', tokenValidation, postController.getPostsById);
+route.get('/:id', tokenValidation, postController.getPostById);
+route.put('/:id', tokenValidation, updatePostInputValidation, postController.updatePostById);
 
 module.exports = route;

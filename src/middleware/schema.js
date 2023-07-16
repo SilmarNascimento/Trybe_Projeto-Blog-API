@@ -33,8 +33,17 @@ const createPostSchema = Joi.object({
   'string.empty': 'Some required fields are missing',
 });
 
+const updatePostSchema = Joi.object({
+  title: titleSchema,
+  content: contentSchema,
+}).messages({
+  'any.required': 'Some required fields are missing',
+  'string.empty': 'Some required fields are missing',
+});
+
 module.exports = {
   crateUserSchema,
   createCategorySchema,
   createPostSchema,
+  updatePostSchema,
 };

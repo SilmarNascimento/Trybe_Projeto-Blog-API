@@ -27,9 +27,22 @@ const getAllPosts = async (_request, response) => {
   });
 };
 
-const getPostsById = async (request, response) => {
+const getPostById = async (request, response) => {
   const { id } = request.params;
-  const { status, data } = await postService.getPostsById(id);
+  const { status, data } = await postService.getPostById(id);
+  if (status && data) {
+    return response.status(mapStatus(status)).json(data);
+  }
+  return response.status(500).json({
+    message: 'Internal Server Error',
+  });
+};
+
+const updatePostById = async (request, response) => {
+  const { id } = request.params;
+  const { id: tokenUserId } = request.user;
+  const { title, content } = request.body;
+  const { status, data } = await postService.updatePostById(tokenUserId, id, { title, content });
   if (status && data) {
     return response.status(mapStatus(status)).json(data);
   }
@@ -41,5 +54,6 @@ const getPostsById = async (request, response) => {
 module.exports = {
   createPost,
   getAllPosts,
-  getPostsById,
+  getPostById,
+  updatePostById,
 };

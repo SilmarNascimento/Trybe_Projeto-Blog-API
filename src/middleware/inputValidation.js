@@ -1,4 +1,9 @@
-const { crateUserSchema, createCategorySchema, createPostSchema } = require('./schema');
+const {
+  crateUserSchema,
+  createCategorySchema,
+  createPostSchema,
+  updatePostSchema,
+} = require('./schema');
 
 const loginInputValidation = (request, response, next) => {
   const { email, password } = request.body;
@@ -48,9 +53,21 @@ const createPostInputValidation = (request, response, next) => {
   next();
 };
 
+const updatePostInputValidation = (request, response, next) => {
+  const { title, content } = request.body;
+  const { error } = updatePostSchema.validate({ title, content });
+  if (error && error.details[0].type) {
+    return response.status(400).json({
+      message: error.message,
+    });
+  }
+  next();
+};
+
 module.exports = {
   loginInputValidation,
   createUserInputValidation,
   createCategoryInputValidation,
   createPostInputValidation,
+  updatePostInputValidation,
 };

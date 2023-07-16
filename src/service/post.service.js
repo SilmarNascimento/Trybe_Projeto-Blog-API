@@ -1,5 +1,7 @@
 const { User, Category, BlogPost, PostCategory } = require('../models');
 
+const ERROR_RESPONSE = { status: 'ERROR', data: { message: 'Internal Server Error' } };
+
 const createPost = async ({ title, content, userId }, arrayId) => {
   try {
     const updated = new Date().toISOString();
@@ -13,7 +15,7 @@ const createPost = async ({ title, content, userId }, arrayId) => {
     await Promise.all(promise);
     return { status: 'CREATED', data: postCreated };
   } catch (error) {
-    return { status: 'ERROR', data: { message: 'Internal Server Error' } };
+    return ERROR_RESPONSE;
   }
 };
 
@@ -28,7 +30,7 @@ const findAllCategoryIds = async (array) => {
       return { status: 'BAD_REQUEST', data: { message: 'one or more "categoryIds" not found' } };
     }
   } catch (error) {
-    return { status: 'ERROR', data: { message: 'Internal Server Error' } };
+    return ERROR_RESPONSE;
   }
 };
 
@@ -47,11 +49,11 @@ const getAllPosts = async () => {
     });
     return { status: 'SUCCESSFUL', data: formattedPosts };
   } catch (error) {
-    return { status: 'ERROR', data: { message: 'Internal Server Error' } };
+    return ERROR_RESPONSE;
   }
 };
 
-const getPostsById = async (postId) => {
+const getPostById = async (postId) => {
   try {
     const postFound = await BlogPost.findOne({
       where: { id: postId },
@@ -67,7 +69,27 @@ const getPostsById = async (postId) => {
     const formattedPost = { ...postFound.dataValues, user: { id, displayName, email, image } };
     return { status: 'SUCCESSFUL', data: formattedPost };
   } catch (error) {
-    return { status: 'ERROR', data: { message: 'Internal Server Error' } };
+    return ERROR_RESPONSE;
+  }
+};
+
+const updatePostById = async (tokenUserId, postId, contentObj) => {
+  try {
+    const postFound = await getPostById(postId);
+    if (postFound.userId !== tokenUserId) {
+      return { status: 'UNAUTHORIZED', data: { message: 'Unauthorized user' } };
+    }
+    const updatedPost = {
+      ...postFound,
+      title: contentObj.title,
+      content: contentObj.content,
+    };
+    await BlogPost.update(updatedPost, {
+      where: { id: postId },
+    });
+    return { status: 'SUCCESSFUL', data: updatedPost };
+  } catch (error) {
+    return ERROR_RESPONSE;
   }
 };
 
@@ -75,5 +97,6 @@ module.exports = {
   createPost,
   findAllCategoryIds,
   getAllPosts,
-  getPostsById,
+  getPostById,
+  updatePostById,
 };
