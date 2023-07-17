@@ -51,14 +51,14 @@ const deletePostById = async (request, response) => {
   console.log('entrei controller');
   const { id } = request.params;
   const { status } = await postService.deletePostById(id);
-  console.log(status);
-  if (status === 204) {
-    return response.status(mapStatus(status));
+  console.log(typeof status);
+  if (status === 'NO_CONTENT') {
+    console.log('entrei if do status');
+    return response.status(mapStatus(status)).send();
   }
-  return response.status(STATUS_ERROR).json(MESSAGE_ERROR);
   } catch (error) {
     console.log(error);
-    return response.status(STATUS_ERROR).json(MESSAGE_ERROR);
+    return response.status(501).json(MESSAGE_ERROR);
   }
 };
 

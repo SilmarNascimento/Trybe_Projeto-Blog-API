@@ -91,15 +91,15 @@ const updatePostById = async (post, postId, contentObj) => {
 
 const deletePostById = async (postId) => {
   try {
-    const postCategoryDele = await PostCategory.destroy({
+    /* const postCategoryDele = await PostCategory.destroy({
       where: { postId },
     });
-    console.log(postCategoryDele);
+    console.log(postCategoryDele); */
     const deleteResponse = await BlogPost.destroy({
       where: { id: postId },
     });
     console.log(deleteResponse);
-    return { status: 204 };
+    return { status: 'NO_CONTENT' };
   } catch (error) {
     console.log(error);
     return ERROR_RESPONSE;
