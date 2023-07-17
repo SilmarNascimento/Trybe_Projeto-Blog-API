@@ -36,9 +36,7 @@ const getPostById = async (request, response) => {
 };
 
 const getPostsByQuery = async (request, response) => {
-  console.log('entrei controller');
   const { q: query } = request.query;
-  console.log(query);
   const { status, data } = await postService.getPostByQuery(query);
   if (status && data) {
     return response.status(mapStatus(status)).json(data);

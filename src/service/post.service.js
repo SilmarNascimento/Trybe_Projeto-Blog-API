@@ -74,7 +74,6 @@ const getPostById = async (postId) => {
 };
 
 const getPostByQuery = async (query) => {
-  console.log('entrei service');
   try {
     const allPosts = await BlogPost.findAll({
       where: { 
@@ -113,13 +112,11 @@ const updatePostById = async (post, postId, contentObj) => {
 
 const deletePostById = async (postId) => {
   try {
-    const deleteResponse = await BlogPost.destroy({
+    await BlogPost.destroy({
       where: { id: postId },
     });
-    console.log(deleteResponse);
     return { status: 'NO_CONTENT' };
   } catch (error) {
-    console.log(error);
     return ERROR_RESPONSE;
   }
 };

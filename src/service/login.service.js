@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const { User } = require('../models');
 
 const secret = process.env.JWT_SECRET || 'senhaSecreta';
-console.log(secret);
 
 const login = async (email, password) => {
   const userFound = await User.findOne({
