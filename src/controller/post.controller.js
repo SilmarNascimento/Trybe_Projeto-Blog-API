@@ -37,9 +37,9 @@ const getPostById = async (request, response) => {
 
 const updatePostById = async (request, response) => {
   const { id } = request.params;
-  const { id: tokenUserId } = request.user;
   const { title, content } = request.body;
-  const { status, data } = await postService.updatePostById(tokenUserId, id, { title, content });
+  const postFound = request.post;
+  const { status, data } = await postService.updatePostById(postFound, id, { title, content });
   if (status && data) {
     return response.status(mapStatus(status)).json(data);
   }
@@ -55,6 +55,7 @@ const deletePostById = async (request, response) => {
   if (status === 204) {
     return response.status(mapStatus(status));
   }
+  return response.status(STATUS_ERROR).json(MESSAGE_ERROR);
   } catch (error) {
     console.log(error);
     return response.status(STATUS_ERROR).json(MESSAGE_ERROR);

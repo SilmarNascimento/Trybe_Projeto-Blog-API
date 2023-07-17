@@ -10,7 +10,13 @@ const tokenValidation = require('../middleware/tokenValidation');
 route.post('/', tokenValidation, createPostInputValidation, postController.createPost);
 route.get('/', tokenValidation, postController.getAllPosts);
 route.get('/:id', tokenValidation, postController.getPostById);
-route.put('/:id', tokenValidation, updatePostInputValidation, postController.updatePostById);
+route.put(
+  '/:id',
+  tokenValidation,
+  postValidation,
+  updatePostInputValidation,
+  postController.updatePostById,
+);
 route.delete('/:id', tokenValidation, postValidation, postController.deletePostById);
 
 module.exports = route;
