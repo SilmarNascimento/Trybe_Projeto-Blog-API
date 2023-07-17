@@ -89,7 +89,21 @@ const updatePostById = async (tokenUserId, postId, contentObj) => {
     });
     return { status: 'SUCCESSFUL', data: updatedPost };
   } catch (error) {
-    console.log(error);
+    return ERROR_RESPONSE;
+  }
+};
+
+const deletePostById = async (tokenUserId, postId) => {
+  try {
+    const { data: postFound } = await getPostById(postId);
+    if (postFound.userId !== tokenUserId) {
+      return { status: 'UNAUTHORIZED', data: { message: 'Unauthorized user' } };
+    }
+    await BlogPost.destroy({
+      where: { id: postId },
+    });
+    return { status: 204 };
+  } catch (error) {
     return ERROR_RESPONSE;
   }
 };
@@ -100,4 +114,5 @@ module.exports = {
   getAllPosts,
   getPostById,
   updatePostById,
+  deletePostById,
 };

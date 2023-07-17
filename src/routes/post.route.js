@@ -10,5 +10,6 @@ route.post('/', tokenValidation, createPostInputValidation, postController.creat
 route.get('/', tokenValidation, postController.getAllPosts);
 route.get('/:id', tokenValidation, postController.getPostById);
 route.put('/:id', tokenValidation, updatePostInputValidation, postController.updatePostById);
+route.delete('/:id', tokenValidation, postController.deletePostById);
 
 module.exports = route;

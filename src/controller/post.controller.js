@@ -1,6 +1,9 @@
 const { postService } = require('../service');
 const { mapStatus } = require('../utils/mapStatus');
 
+const STATUS_ERROR = 500;
+const MESSAGE_ERROR = { message: 'Internal Server Error' };
+
 const createPost = async (request, response) => {
   const { title, content, categoryIds } = request.body;
   const { id: userId } = request.user;
@@ -12,9 +15,7 @@ const createPost = async (request, response) => {
   if (status && data) {
     return response.status(mapStatus(status)).json(data);
   }
-  return response.status(500).json({
-    message: 'Internal Server Error',
-  });
+  return response.status(STATUS_ERROR).json(MESSAGE_ERROR);
 };
 
 const getAllPosts = async (_request, response) => {
@@ -22,9 +23,7 @@ const getAllPosts = async (_request, response) => {
   if (status && data) {
     return response.status(mapStatus(status)).json(data);
   }
-  return response.status(500).json({
-    message: 'Internal Server Error',
-  });
+  return response.status(STATUS_ERROR).json(MESSAGE_ERROR);
 };
 
 const getPostById = async (request, response) => {
@@ -33,9 +32,7 @@ const getPostById = async (request, response) => {
   if (status && data) {
     return response.status(mapStatus(status)).json(data);
   }
-  return response.status(500).json({
-    message: 'Internal Server Error',
-  });
+  return response.status(STATUS_ERROR).json(MESSAGE_ERROR);
 };
 
 const updatePostById = async (request, response) => {
@@ -46,9 +43,17 @@ const updatePostById = async (request, response) => {
   if (status && data) {
     return response.status(mapStatus(status)).json(data);
   }
-  return response.status(500).json({
-    message: 'Internal Server Error',
-  });
+  return response.status(STATUS_ERROR).json(MESSAGE_ERROR);
+};
+
+const deletePostById = async (request, response) => {
+  const { id } = request.params;
+  const { id: tokenUserId } = request.user;
+  const { status, data } = await postService.deletePostById(tokenUserId, id);
+  if (status && data) {
+    return response.status(STATUS_ERROR).json(MESSAGE_ERROR);
+  }
+  return response.status(mapStatus(status));
 };
 
 module.exports = {
@@ -56,4 +61,5 @@ module.exports = {
   getAllPosts,
   getPostById,
   updatePostById,
+  deletePostById,
 };
