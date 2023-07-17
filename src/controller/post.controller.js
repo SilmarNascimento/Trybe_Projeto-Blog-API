@@ -47,13 +47,18 @@ const updatePostById = async (request, response) => {
 };
 
 const deletePostById = async (request, response) => {
+  try {
+  console.log('entrei controller');
   const { id } = request.params;
-  const { id: tokenUserId } = request.user;
-  const { status, data } = await postService.deletePostById(tokenUserId, id);
-  if (status && data) {
+  const { status } = await postService.deletePostById(id);
+  console.log(status);
+  if (status === 204) {
+    return response.status(mapStatus(status));
+  }
+  } catch (error) {
+    console.log(error);
     return response.status(STATUS_ERROR).json(MESSAGE_ERROR);
   }
-  return response.status(mapStatus(status));
 };
 
 module.exports = {

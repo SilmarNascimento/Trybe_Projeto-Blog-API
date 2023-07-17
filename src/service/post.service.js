@@ -93,17 +93,19 @@ const updatePostById = async (tokenUserId, postId, contentObj) => {
   }
 };
 
-const deletePostById = async (tokenUserId, postId) => {
+const deletePostById = async (postId) => {
   try {
-    const { data: postFound } = await getPostById(postId);
-    if (postFound.userId !== tokenUserId) {
-      return { status: 'UNAUTHORIZED', data: { message: 'Unauthorized user' } };
-    }
-    await BlogPost.destroy({
+    const postCategoryDele = await PostCategory.destroy({
+      where: { postId },
+    });
+    console.log(postCategoryDele);
+    const deleteResponse = await BlogPost.destroy({
       where: { id: postId },
     });
+    console.log(deleteResponse);
     return { status: 204 };
   } catch (error) {
+    console.log(error);
     return ERROR_RESPONSE;
   }
 };
