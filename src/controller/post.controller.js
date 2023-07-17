@@ -35,6 +35,17 @@ const getPostById = async (request, response) => {
   return response.status(STATUS_ERROR).json(MESSAGE_ERROR);
 };
 
+const getPostsByQuery = async (request, response) => {
+  console.log('entrei controller');
+  const { q: query } = request.query;
+  console.log(query);
+  const { status, data } = await postService.getPostByQuery(query);
+  if (status && data) {
+    return response.status(mapStatus(status)).json(data);
+  }
+  return response.status(STATUS_ERROR).json(MESSAGE_ERROR);
+};
+
 const updatePostById = async (request, response) => {
   const { id } = request.params;
   const { title, content } = request.body;
@@ -47,21 +58,19 @@ const updatePostById = async (request, response) => {
 };
 
 const deletePostById = async (request, response) => {
-  try {
   const { id } = request.params;
   const { status } = await postService.deletePostById(id);
   if (status === 'NO_CONTENT') {
     return response.status(mapStatus(status)).send();
   }
-  } catch (error) {
-    return response.status(STATUS_ERROR).json(MESSAGE_ERROR);
-  }
+  return response.status(STATUS_ERROR).json(MESSAGE_ERROR);
 };
 
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
+  getPostsByQuery,
   updatePostById,
   deletePostById,
 };

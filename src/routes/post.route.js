@@ -11,6 +11,7 @@ const deleteMiddleware = [tokenValidation, postValidation, updatePostInputValida
 
 route.post('/', tokenValidation, createPostInputValidation, postController.createPost);
 route.get('/', tokenValidation, postController.getAllPosts);
+route.get('/search', tokenValidation, postController.getPostsByQuery);
 route.get('/:id', tokenValidation, postController.getPostById);
 route.put('/:id', deleteMiddleware, postController.updatePostById);
 route.delete('/:id', tokenValidation, postValidation, postController.deletePostById);
